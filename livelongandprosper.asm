@@ -1,26 +1,38 @@
-STD_IN equ 0
-STD_OUT equ 1
-STD_ERR equ 2
-
-SYS_IN equ 0
-SYS_OUT equ 1
-SYS_EXIT equ 60
-
 section .data
-
-  text db "Live Long And Prosper",10
-  
+	text db "Live Long And Prosper",10,0
 section .text
+	global _start
 
-  global _start
-  
 _start:
-  mov rax, SYS_IN
-  mov rdi, STD_OUT
-  mov rsi, text
-  mov rdx, 22
-  syscall
-  
-  mov rax, SYS_EXIT
-  mov rdi, 0
-  syscall
+	mov rax, text
+
+	call _print
+
+	mov rax, 60
+	mov rdi, 0
+	syscall
+	
+_print:
+	push rax
+
+	mov rbx, 0
+	
+_printloop:
+
+	inc rax
+
+	inc rbx
+
+	mov cl, [rax]
+
+	cmp cl, 0
+
+	jne _printloop
+
+	mov rax, 1
+	mov rdi, 1
+	pop rsi
+	mov rdx, rbx
+	syscall
+
+	ret
