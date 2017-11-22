@@ -11,22 +11,13 @@ section .text
 
 ;void init_list(struct *list_head)
 init_list:
-	PUSH RBP
-	MOV RBP, RSP
-
 	MOV QWORD [RDI + list_head.next], 0
 	MOV QWORD [RDI + list_head.prev], 0
-
-	MOV RSP, RBP
-	POP RBP
 	RET
 
 ;void list_add(struct list_head *new, struct list_head *head)
 ;RDI: new, RSI: head
 list_add:
-	PUSH RBP
-	MOV RBP, RSP
-
 	MOV RAX, [RSI + list_head.next] ;list_head *RAX = head->next
 	MOV [RDI + list_head.next], RAX ;new->next = head->next
 	MOV [RDI + list_head.prev], RSI ;new->prev = head
@@ -35,15 +26,6 @@ list_add:
 	MOV [RAX + list_head.prev], RDI ;head->next->prev = new
 _skip:	
 	MOV [RSI + list_head.next], RDI
-
-	MOV RSP, RBP
-	POP RBP
-	RET
-
-;static void __list_del(struct list_head *prev, struct list_head *next);
-;RAX = prev, RBX = 
-__list_del:
-	
 	RET
 
 ;void list_del(struct list_head *entry)
